@@ -1,0 +1,4 @@
+tangent_core - WARNING - too many values to unpack
+tangent_core - WARNING - exceptions must be old-style classes or derived from BaseException, not str
+tangent_core - WARNING - {'username': 'kevin'}
+tangent_core - WARNING - exceptions must be old-style classes or derived from BaseException, not str
