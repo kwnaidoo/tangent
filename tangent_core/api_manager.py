@@ -18,6 +18,8 @@ class ModelObject(object):
     def __init__(self, response_data):
         try:
             for k, v in response_data.items():
+                if type(v) is dict:
+                    v = ModelObject(v)
                 setattr(self, k, v)
         except Exception as ex:
             api_logger.warning(ex)
@@ -71,7 +73,7 @@ class API_Manager(object):
         # if we already have a token , just set it and don't re-authenticate
         if token is not None:
             self.token = token
-            self.headers['Authorization'] = 'Token%s' % self.token
+            self.headers['Authorization'] = 'Token %s' % self.token
 
         elif username is None or password is None:
             """
@@ -87,6 +89,17 @@ class API_Manager(object):
             self.api_username = username
             self.api_password = password
             self.authenticate() # Authenticate right away and get a token
+
+    """ 
+        Get token - will check return if there's a session token set
+        or not. Usefull to test if the user is logged in or not.
+
+        :return: Will return a token or none
+        :rtype" None | token hash
+    """
+
+    def get_token(self):
+        return self.token
 
     """
         A bit of IOC magic - Will return python request
@@ -122,7 +135,7 @@ class API_Manager(object):
                 }
             ).json()
             self.token = response['token']
-            self.headers['Authorization'] = 'Token%s' % self.token
+            self.headers['Authorization'] = 'Token %s' % self.token
 
         except Exception as ex:
             api_logger.warning(ex)

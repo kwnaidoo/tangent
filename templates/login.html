@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en" class="bg-dark">
+<head>
+  <meta charset="utf-8" />
+  <title>Tangent Management System</title>
+  <meta name="description" content="app, web app, responsive, admin dashboard, admin, flat, flat ui, ui kit, off screen nav" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" /> 
+  <link rel="stylesheet" href="/static/css/bootstrap.css" type="text/css" />
+  <link rel="stylesheet" href="/static/css/animate.css" type="text/css" />
+  <link rel="stylesheet" href="/static/css/font-awesome.min.css" type="text/css" />
+  <link rel="stylesheet" href="/static/css/font.css" type="text/css" />
+    <link rel="stylesheet" href="/static/css/app.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="/static/js/ie/html5shiv.js"></script>
+    <script src="/static/js/ie/respond.min.js"></script>
+    <script src="/static/js/ie/excanvas.js"></script>
+  <![endif]-->
+</head>
+<body>
+  <section id="content" class="m-t-lg wrapper-md animated fadeInUp">    
+    <div class="container aside-xxl">
+      <a class="navbar-brand block" href="#"><img src="/static/images/logo.png" class="m-r-sm">Tangent Management System</a>
+      <section class="panel panel-default bg-white m-t-lg">
+        <header class="panel-heading text-center">
+          <strong>Sign in</strong>
+        </header>
+        <form action="/login/" method="POST" class="panel-body wrapper-lg">
+          <div class="form-group">
+             {% csrf_token %}
+            <label class="control-label">Email</label>
+            <input type="text" name="username" placeholder="Your Username" class="form-control input-lg">
+          </div>
+          <div class="form-group">
+            <label class="control-label">Password</label>
+            <input name="password" type="password" id="inputPassword" placeholder="Your Password" class="form-control input-lg">
+          </div>
+
+          <button type="submit" class="btn btn-primary">Sign in</button>
+          <div class="line line-dashed"></div>
+        </form>
+      </section>
+    </div>
+  </section>
+  <!-- footer -->
+  <footer id="footer">
+    <div class="text-center padder">
+      <p>
+        <small>Tangent Management System<br>&copy; 2018</small>
+      </p>
+    </div>
+  </footer>
+  <!-- / footer -->
+  <script src="/static/js/jquery.min.js"></script>
+  <!-- Bootstrap -->
+  <script src="/static/js/bootstrap.js"></script>
+  <!-- App -->
+  <script src="/static/js/app.js"></script>
+  <script src="/static/js/app.plugin.js"></script>
+  <script src="/static/js/slimscroll/jquery.slimscroll.min.js"></script>
+  
+</body>
+</html>
