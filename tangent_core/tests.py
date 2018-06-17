@@ -62,7 +62,7 @@ class APITestCase(TestCase):
         self.assertEqual(me.username , 'kevin')
 
     # test get token
-    def test_api_get_me(self):
+    def test_api_get_token(self):
         self.assertEqual(self.model.objects.get_token() , '1234')
 
     # test getting a collection of objects 
