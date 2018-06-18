@@ -1,0 +1,40 @@
+{% extends "app.html" %}
+{% block content %}
+<header class="header bg-white b-b b-light">
+  <p><strong>{{page_title}}</strong></p>
+</header>
+<section class="scrollable wrapper">
+  <div class="row">
+
+    <div class="col-sm-12 portlet">
+      <section class="panel panel-success portlet-item">
+
+        <ul class="list-group alt">
+          {% for emp in employees %}
+          <li class="list-group-item">
+            <div class="media">
+              <div class="pull-right text-success m-t-sm">
+                <i class="fa fa-circle"></i>
+              </div>
+              <div class="media-body">
+                <div><a href="#"> {{emp.user.first_name}} {{emp.user.last_name}}</a></div>
+                <small class="text-muted">{{emp.position.level}} {{emp.position.name}}</small>
+                <p>
+
+                  <strong>Username : </strong> {{emp.user.username}} <br />
+                  <strong>Email : </strong> {{emp.user.email}} <br />
+                  <strong>Phone Number: </strong> {{emp.phone_number}}
+                </p>
+              </div>
+            </div>
+          </li>
+          {% endfor %}
+
+
+        </ul>
+      </section>
+    </div>
+  </div>
+</section>
+</section>
+{% endblock %}

@@ -1,0 +1,52 @@
+{% extends "app.html" %}
+{% block content %}
+<header class="header bg-white b-b b-light">
+  <p><strong>{{page_title}}</strong></p>
+</header>
+<section class="scrollable wrapper">
+  <div class="row">
+
+    <div class="col-sm-12 portlet">
+      <section class="panel panel-success portlet-item">
+
+        <ul class="list-group alt">
+
+          <li class="list-group-item">
+            <div class="media">
+              <div class="pull-right text-success m-t-sm">
+                <i class="fa fa-circle"></i>
+              </div>
+              <div class="media-body">
+                <div><a href="#"> {{profile.user.first_name}} {{profile.user.last_name}}</a></div>
+                <b>{{profile.position.level}} {{profile.position.name}}</b><br /><br /><br />
+                <p>
+
+                  <strong>Username : </strong> {{profile.user.username}} <br />
+                  <strong>Email : </strong> {{profile.user.email}} <br />
+                  <strong>Phone Number: </strong> {{profile.phone_number}} <br />
+                  <strong>Address: </strong>{{profile.physical_address | safe}}<br />
+                  <strong>Leave Days: </strong> {{profile.leave_remaining}} <br />
+                  <strong>Years worked: </strong>{{profile.years_worked}} <br />
+                  <strong>Tax Number: </strong> {{profile.tax_number}} <br />
+                  <strong>Your Next Review:</strong> {{profile.next_review}} <br />
+
+                </p>
+                <hr />
+                <h4> Next of Kin Details</h4>
+                <strong> Name : </strong> {{profile.object_collection.employee_next_of_kin.0.name}} <br />
+                <strong> Relationship : </strong> {{profile.object_collection.employee_next_of_kin.0.relationship}} <br />
+                <strong> Phone Number : </strong> {{profile.object_collection.employee_next_of_kin.0.phone_number}} <br />
+                <strong> Email : </strong> {{profile.object_collection.employee_next_of_kin.0.email}} <br />
+                  <strong> Address : </strong> {{profile.object_collection.employee_next_of_kin.0.physical_address|safe}} <br />
+              </div>
+            </div>
+          </li>
+
+
+        </ul>
+      </section>
+    </div>
+  </div>
+</section>
+</section>
+{% endblock %}

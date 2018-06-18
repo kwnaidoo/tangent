@@ -1,0 +1,121 @@
+{% extends "app.html" %}
+{% load employee_tags %}
+{% block content %}
+<header class="header bg-white b-b b-light">
+  <p><strong>DASHBOARD - STATS</strong></p>
+</header>
+<section class="scrollable wrapper">
+  <div class="row">
+    <div class="col-sm-6 portlet">
+      <section class="panel panel-info portlet-item">
+        <header class="panel-heading">
+          Birthdays
+        </header>
+        <div class="list-group bg-white">
+          {% for emp in birthdays %}
+          <a href="#" class="list-group-item">
+            {{emp.user.first_name}} {{emp.user.last_name}} - <span class="label label-warning">Date of birth: {{emp.birth_date}}</span> <span class="label label-success">Next Birthday: {{emp.days_to_birthday|get_birthday}}</span>
+          </a>
+          {% endfor %}
+        </div>
+      </section>
+      <section class="panel panel-default portlet-item">
+        <header class="panel-heading">
+          <ul class="nav nav-pills pull-right">
+            <li>
+              <a href="#" class="panel-toggle text-muted"><i class="fa fa-caret-down text-active"></i><i class="fa fa-caret-up text"></i></a>
+            </li>
+          </ul>
+          Employees</span>
+        </header>
+        <section class="panel-body">
+          {% for emp in employees %}
+          <article class="media">
+
+            <div class="media-body">
+              <a href="#" class="h4">{{emp.user.first_name}} {{emp.user.last_name}} : {{emp.position.level}} {{emp.position.name}}</a>
+              <small class="block m-t-xs">
+                <strong> Years Worked : </strong> {{emp.years_worked}} <br />
+                <strong> Age : </strong> {{emp.age}} <br />
+                </small>
+              <em class="text-xs">Phone No. <span class="text-danger">{{emp.phone_number}}</span></em> |  <em class="text-xs">Email. <span class="text-danger">{{emp.email}}</span></em>
+            </div>
+          </article>
+          <div class="line pull-in"></div>
+        {% endfor %}
+
+
+        </section>
+      </section>
+    </div>
+    <div class="col-sm-6 portlet">
+      <section class="panel panel-success portlet-item">
+        <header class="panel-heading">
+          Top Positions
+        </header>
+        <ul class="list-group alt">
+          {% for emp in positions %}
+          <li class="list-group-item">
+            <div class="media">
+              <div class="pull-right text-success m-t-sm">
+                <i class="fa fa-circle"></i>
+              </div>
+              <div class="media-body">
+                <div><a href="#"> {{emp.user.first_name}} {{emp.user.last_name}}</a></div>
+                <small class="text-muted">{{emp.position.level}} {{emp.position.name}}</small>
+              </div>
+            </div>
+          </li>
+          {% endfor %}
+
+
+        </ul>
+      </section>
+      <section class="panel panel-default portlet-item">
+        <header class="panel-heading">
+         Race Group Stats
+        </header>
+        <section class="panel-body">
+        {% for race, number in race_groups.items %}
+          <article class="media">
+
+            <div class="media-body">
+              <div class="pull-right media-xs text-center text-muted">
+                <strong class="h4">{{number}}</strong><br>
+
+              </div>
+              <a href="#" class="h4">{{race}}</a>
+
+            </div>
+          </article>
+        {% endfor %}
+        <div class="line pull-in"></div>
+        </section>
+      </section>
+
+      <section class="panel panel-default portlet-item">
+        <header class="panel-heading">
+         Gender Stats
+        </header>
+        <section class="panel-body">
+        {% for gender, number in genders.items %}
+          <article class="media">
+
+            <div class="media-body">
+              <div class="pull-right media-xs text-center text-muted">
+                <strong class="h4">{{number}}</strong><br>
+
+              </div>
+              <a href="#" class="h4">{{gender}}</a>
+
+            </div>
+          </article>
+        {% endfor %}
+        <div class="line pull-in"></div>
+        </section>
+      </section>
+    </div>
+  </div>
+</section>
+</section>
+{% endblock %}
