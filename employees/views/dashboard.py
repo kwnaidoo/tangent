@@ -16,7 +16,7 @@ class DashboardView(ListView):
     results is returned.
     """
 
-    template_name = 'app.html'
+    template_name = 'dashboard.html'
     token = None
     user_name = None
 
@@ -24,7 +24,7 @@ class DashboardView(ListView):
         """
         The dispatch method is responsible for checking
         if the user is authenticated and setting up
-        initial values .
+        initial values.
         """
         if 'token' not in request.session:
             return HttpResponseRedirect('/login/')
@@ -57,8 +57,8 @@ class DashboardView(ListView):
         context['positions'] = EmployeeAPI.objects.filter(ordering="-position")
 
         # all employees
-        # Generator will discard values after iteracting through them so
-        # list this to reuse
+        # Generator will discard values after iterating through them so
+        # listify this to preserve data for later usuage.
         context['employees'] = list(EmployeeAPI.objects.filter(
             ordering="-user__first_name"
             )
