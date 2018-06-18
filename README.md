@@ -14,12 +14,14 @@ To install and run the application please do the following :
 ```
 1) pip install -r requirements.txt
 2) python manage.py migrate
-3) Press CTRL + O in Google Chrome (or any other browser - may vary) and browse through
+3) python manage.py test       # Can do better, just an handful of tests
+                               # due to time constraints.
+4) Press CTRL + O in Google Chrome (or any other browser - may vary) and browse through
    to open this document => tangent/build/html/genindex.html , this help guide will provide full
    documentation on  most features of this app and help you understand the logic behind
    why and how this app was written. Please read through...
-4) python manage.py runserver
-5) visit : http://127.0.0.1:8000 and login with username and password provided.
+5) python manage.py runserver
+6) visit : http://127.0.0.1:8000 and login with username and password provided.
 ```
 
 ### Folder structure
