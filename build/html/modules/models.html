@@ -1,0 +1,263 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Models &#8212; tangent 1.0 documentation</title>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="module-employees.models">
+<span id="models"></span><h1>Models<a class="headerlink" href="#module-employees.models" title="Permalink to this headline">¶</a></h1>
+<dl class="class">
+<dt id="employees.models.Employee">
+<em class="property">class </em><code class="descclassname">employees.models.</code><code class="descname">Employee</code><span class="sig-paren">(</span><em>token=None</em>, <em>username=None</em>, <em>password=None</em>, <em>transport=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/employees/models.html#Employee"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#employees.models.Employee" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create our API model which will extend
+ModelFacade.</p>
+<p>Since we’re using our custom API model we don’t
+need to setup properties like we normally do in django.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-employees.views">
+<span id="views"></span><h1>Views<a class="headerlink" href="#module-employees.views" title="Permalink to this headline">¶</a></h1>
+<p>We import these here so that we can maintain a
+consistent import structure .e.g.
+from employees.views import DashboardView , even
+though these views are seperated into their own files.</p>
+</div>
+<div class="section" id="module-employees.templatetags.employee_tags">
+<span id="template-tags"></span><h1>Template Tags<a class="headerlink" href="#module-employees.templatetags.employee_tags" title="Permalink to this headline">¶</a></h1>
+<dl class="data">
+<dt id="employees.templatetags.employee_tags.register">
+<code class="descclassname">employees.templatetags.employee_tags.</code><code class="descname">register</code><em class="property"> = &lt;django.template.library.Library object&gt;</em><a class="headerlink" href="#employees.templatetags.employee_tags.register" title="Permalink to this definition">¶</a></dt>
+<dd><p>A simple template tag to take in the number of days
+until the users next birthday and convert that into
+a neatly formatted date.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-tangent_core.api_manager">
+<span id="api-manager"></span><h1>API Manager<a class="headerlink" href="#module-tangent_core.api_manager" title="Permalink to this headline">¶</a></h1>
+<dl class="class">
+<dt id="tangent_core.api_manager.API_Manager">
+<em class="property">class </em><code class="descclassname">tangent_core.api_manager.</code><code class="descname">API_Manager</code><span class="sig-paren">(</span><em>resource_name</em>, <em>token=None</em>, <em>username=None</em>, <em>password=None</em>, <em>transport=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tangent_core/api_manager.html#API_Manager"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tangent_core.api_manager.API_Manager" title="Permalink to this definition">¶</a></dt>
+<dd><p>API Manager Adapter class
+This class will take care of all the interactions with the rest API
+endpoint as per this assignments requirement. The goal is to write
+an adapter to allow for upper level code to consistently interact with
+the API without knowing that it’s a JSON API.</p>
+<p>This makes the code more robust and enables for swapping
+out the manager in future.</p>
+<p>I have also made the code adaptable to use any kind of
+HTTP requests library ,I prefer python requests but it’s
+possible to easily swap this out for a custom written
+one or something like urllib.</p>
+<dl class="method">
+<dt id="tangent_core.api_manager.API_Manager.authenticate">
+<code class="descname">authenticate</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tangent_core/api_manager.html#API_Manager.authenticate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tangent_core.api_manager.API_Manager.authenticate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Will poll the rest framework backend API to retrieve a token.
+:raises Exception: Will throw an exception if the API
+authentication fails.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="tangent_core.api_manager.API_Manager.filter">
+<code class="descname">filter</code><span class="sig-paren">(</span><em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tangent_core/api_manager.html#API_Manager.filter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tangent_core.api_manager.API_Manager.filter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Dynamic querying interface to filter our API results.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Will return a generator.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">Generator</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#Exception" title="(in Python v3.6)"><strong>Exception</strong></a> – will return blank generator.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="tangent_core.api_manager.API_Manager.get_token">
+<code class="descname">get_token</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tangent_core/api_manager.html#API_Manager.get_token"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tangent_core.api_manager.API_Manager.get_token" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get token - will check return if there’s a session token set
+or not. Usefull to test if the user is logged in or not.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Will return a token or none</td>
+</tr>
+</tbody>
+</table>
+<p>:rtype None | token hash</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="tangent_core.api_manager.API_Manager.get_transport">
+<code class="descname">get_transport</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tangent_core/api_manager.html#API_Manager.get_transport"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tangent_core.api_manager.API_Manager.get_transport" title="Permalink to this definition">¶</a></dt>
+<dd><p>A bit of IOC magic - Will return python request
+as our transport mechanism if no transport object is passed
+to this class.</p>
+<p>This allows for more advanced HTTP querying on the fly
+without just tieing us down to using one library.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Will return a HTTP transport object</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">Object</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="tangent_core.api_manager.API_Manager.me">
+<code class="descname">me</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tangent_core/api_manager.html#API_Manager.me"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tangent_core.api_manager.API_Manager.me" title="Permalink to this definition">¶</a></dt>
+<dd><p>Queries API to get current logged in users profile.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Will return a Instance of ModelObject.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#tangent_core.api_manager.ModelObject" title="tangent_core.api_manager.ModelObject">ModelObject</a></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#Exception" title="(in Python v3.6)"><strong>Exception</strong></a> – User not found or failed to access that user.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="tangent_core.api_manager.ModelObject">
+<em class="property">class </em><code class="descclassname">tangent_core.api_manager.</code><code class="descname">ModelObject</code><span class="sig-paren">(</span><em>response_data</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tangent_core/api_manager.html#ModelObject"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tangent_core.api_manager.ModelObject" title="Permalink to this definition">¶</a></dt>
+<dd><p>ModelObject is a simple class we’re going to use as a container
+for our JSON data , so everytime we query the API and get JSON
+back we’re going to convert that JSON into an object.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-tangent_core.model_facade">
+<span id="model-facade"></span><h1>Model Facade<a class="headerlink" href="#module-tangent_core.model_facade" title="Permalink to this headline">¶</a></h1>
+<dl class="class">
+<dt id="tangent_core.model_facade.ModelFacade">
+<em class="property">class </em><code class="descclassname">tangent_core.model_facade.</code><code class="descname">ModelFacade</code><span class="sig-paren">(</span><em>token=None</em>, <em>username=None</em>, <em>password=None</em>, <em>transport=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tangent_core/model_facade.html#ModelFacade"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tangent_core.model_facade.ModelFacade" title="Permalink to this definition">¶</a></dt>
+<dd><p>To provide a consisten API for our models to work similar
+to Django’s built in ORM This Facade will manage all classes
+to achieve this and provide.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>username</strong> (<em>string</em>) – the API username</li>
+<li><strong>password</strong> (<em>string</em>) – the unhashed API password</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="tangent_core.model_facade.ModelFacade.rebuild_manager">
+<code class="descname">rebuild_manager</code><span class="sig-paren">(</span><em>token=None</em>, <em>username=None</em>, <em>password=None</em>, <em>transport=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tangent_core/model_facade.html#ModelFacade.rebuild_manager"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tangent_core.model_facade.ModelFacade.rebuild_manager" title="Permalink to this definition">¶</a></dt>
+<dd><p>Future proofing - at some point we may need to re-use
+an existing model object after the token as expired
+or something to that effect - so use this method to
+recreate the model manager.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Models</a></li>
+<li><a class="reference internal" href="#module-employees.views">Views</a></li>
+<li><a class="reference internal" href="#module-employees.templatetags.employee_tags">Template Tags</a></li>
+<li><a class="reference internal" href="#module-tangent_core.api_manager">API Manager</a></li>
+<li><a class="reference internal" href="#module-tangent_core.model_facade">Model Facade</a></li>
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/modules/models.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2018, Kevin Naidoo.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.5</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+      |
+      <a href="../_sources/modules/models.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
