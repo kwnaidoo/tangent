@@ -8,7 +8,13 @@ class ModelObject(object):
     """
     ModelObject is a simple class we're going to use as a container
     for our JSON data , so everytime we query the API and get JSON
-    back we're going to convert that JSON into an object.
+    back we're going to convert that JSON into an object similar to
+    a django model instance.
+
+    This approach just makes our code more inline with how django does
+    things and as our API integration grows - We'd have a powerful Query
+    API similar that's clean encapusalted so no polluting boilplate API
+    requests throughout our codebase.
     """
 
     def __init__(self, response_data):
@@ -16,10 +22,13 @@ class ModelObject(object):
         We'll take the dictionary and set dynamic properties on this
         instance of ModelObject.
         Args:
-            response_data (dict) : a dictionary comming
-            from response.json()
+            response_data (dict) : a dictionary comming from response.json()
         """
         try:
+            # storing in object_collection for more complex usage
+            # to access nth level data.
+            self.object_collection = response_data.copy()
+
             for k, v in response_data.items():
                 if type(v) is dict:
                     v = ModelObject(v)
