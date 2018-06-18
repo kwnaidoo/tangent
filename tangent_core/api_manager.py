@@ -3,19 +3,22 @@ from tangent_core import api_logger
 import urllib
 import requests
 
-"""
-    ModelObject is a simple class we're going to use as a container
-    for our JSON data , so everytime we query the API and get JSON 
-    back we're going to convert that JSON into an object. 
-"""
+
 class ModelObject(object):
     """
+    ModelObject is a simple class we're going to use as a container
+    for our JSON data , so everytime we query the API and get JSON
+    back we're going to convert that JSON into an object.
+    """
+
+    def __init__(self, response_data):
+        """
         We'll take the dictionary and set dynamic properties on this
         instance of ModelObject.
         Args:
-            response_data (dict) : a dictionary comming from response.json()
-    """
-    def __init__(self, response_data):
+            response_data (dict) : a dictionary comming
+            from response.json()
+        """
         try:
             for k, v in response_data.items():
                 if type(v) is dict:
@@ -25,39 +28,43 @@ class ModelObject(object):
             api_logger.warning(ex)
             raise('Data provided is not valid JSON.')
 
-"""
-    API Manager Adapter class 
-
-    This class will take care of all the interactions with the rest API endpoint as per
-    this assignments requirement. The goal is to write an adapter to allow for upper level
-    code to consistently interact with the API without knowing that it's a JSON API.
-
-    This makes the code more robust and enables for swapping out the manager in future.
-
-    I have also made the code adaptable to use any kind of HTTP requests library ,
-    I prefer python requests but it's possible to easily swap this out for a custom
-    written one or something like urllib. 
-"""
 
 class API_Manager(object):
-
     """
-       Will setup core properties needed by the adapter throughout it's processing.
-       :param string username: the API username
-       :param string password: the unhashed API password
-       :param object transport: Specify a different HTTP request handler ,
-       defaults to requests
+    API Manager Adapter class
+    This class will take care of all the interactions with the rest API
+    endpoint as per this assignments requirement. The goal is to write
+    an adapter to allow for upper level code to consistently interact with
+    the API without knowing that it's a JSON API.
 
-       :raises Exception:
-           Will throw and exception if username and password not sent to method.
-           Will throw an exception if the API authentication fails.
+    This makes the code more robust and enables for swapping
+    out the manager in future.
 
+    I have also made the code adaptable to use any kind of
+    HTTP requests library ,I prefer python requests but it's
+    possible to easily swap this out for a custom written
+    one or something like urllib.
     """
+
     def __init__(
         self, resource_name,
         token=None, username=None,
         password=None, transport=None
     ):
+
+        """
+        Will setup core properties needed by the adapter
+        throughout it's processing.
+        :param string username: the API username
+        :param string password: the unhashed API password
+        :param object transport: Specify a different HTTP request handler ,
+        defaults to requests
+
+        :raises Exception:
+           Will throw and exception if username and password not
+           sent to method.Will throw an exception if the
+           API authentication fails.
+        """
         # will keep track of our authentication headers
         self.token = None
         self.headers = {}
@@ -77,50 +84,52 @@ class API_Manager(object):
 
         elif username is None or password is None:
             """
-                if no token , username and password present then we can't access the API
-                so throw an exception.
+            if no token , username and password present then we can't
+            access the API so throw an exception.
             """
             raise("Login credentials provided are invalid.")
         else:
             """
-                In a production grade application - we'd probably want to use environment vars
-                but for the purposes of this assignment I'm not overcomplicating this.
+            In a production grade application - we'd probably want to use
+            environment vars but for the purposes of this assignment I'm
+            not overcomplicating this.
             """
             self.api_username = username
             self.api_password = password
-            self.authenticate() # Authenticate right away and get a token
+            self.authenticate()  # Authenticate right away and get a token
 
-    """ 
+    def get_token(self):
+        """
         Get token - will check return if there's a session token set
         or not. Usefull to test if the user is logged in or not.
 
         :return: Will return a token or none
-        :rtype" None | token hash
-    """
 
-    def get_token(self):
+        :rtype None | token hash
+
+        """
         return self.token
 
-    """
+    def get_transport(self):
+        """
         A bit of IOC magic - Will return python request
         as our transport mechanism if no transport object is passed
-        to this class. 
+        to this class.
 
         This allows for more advanced HTTP querying on the fly
         without just tieing us down to using one library.
 
         :return: Will return a HTTP transport object
         :rtype: Object
-    """
-    def get_transport(self):
+        """
         return self.transport if self.transport else requests
 
-    """
-        Will poll the rest framework backend API to retrieve a token.
-        :raises Exception:
-            Will throw an exception if the API authentication fails.
-    """
     def authenticate(self):
+        """
+        Will poll the rest framework backend API to retrieve a token.
+        :raises Exception: Will throw an exception if the API
+        authentication fails.
+        """
 
         # build the API endpoint URL
         api_endpoint = "%s/api-token-auth/" % (self.api_endpoint)
@@ -130,7 +139,7 @@ class API_Manager(object):
             response = self.get_transport().post(
                 api_endpoint,
                 {
-                    'username': self.api_username ,
+                    'username': self.api_username,
                     'password': self.api_password
                 }
             ).json()
@@ -142,14 +151,14 @@ class API_Manager(object):
             # provide a more user friendly error
             raise Exception("Login credentials provided are invalid.")
 
-    """
+    def me(self):
+        """
         Queries API to get current logged in users profile.
 
         :return: Will return a Instance of ModelObject.
         :rtype: ModelObject
         :raises Exception: User not found or failed to access that user.
-    """
-    def me(self):
+        """
 
         # build api endpoint
         api_endpoint = "%s/api/employee/me/" % (self.api_endpoint)
@@ -161,7 +170,7 @@ class API_Manager(object):
                 api_endpoint,
                 headers=headers
             ).json()
-            
+
             # Create instance of ModelObject and fill will JSON data from API
             return ModelObject(me)
 
@@ -170,6 +179,14 @@ class API_Manager(object):
             raise Exception('User not found or failed to access that user.')
 
     def filter(self, **kwargs):
+        """
+        Dynamic querying interface to filter our API results.
+
+        :return: Will return a generator.
+        :rtype: Generator
+        :raises Exception: will return blank generator.
+        """
+
         try:
             # build API endpoint and GET querystring and grab headers
             query_string = urllib.urlencode(kwargs)
@@ -191,8 +208,9 @@ class API_Manager(object):
         except Exception as ex:
             api_logger.warning(ex)
             """
-                We're within a generator so simply return a blank generator,
-                possibly can look at generating an exception but any empty collection
-                would indicate that the query failed or didn't yield results.
+            We're within a generator so simply return a blank generator,
+            possibly can look at generating an exception but any
+            empty collection would indicate that the query failed
+            or didn't yield results.
             """
             yield iter(())

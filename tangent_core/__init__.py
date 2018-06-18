@@ -1,4 +1,8 @@
 import logging
+"""
+Sets up our API logger which will log all exceptions
+to a file api_exceptions.log.
+"""
 
 # Create our API logger to keep track of failures in API queries
 api_logger = logging.getLogger(__name__)
