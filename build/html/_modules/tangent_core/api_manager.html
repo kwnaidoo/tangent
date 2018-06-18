@@ -41,7 +41,13 @@
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    ModelObject is a simple class we&#39;re going to use as a container</span>
 <span class="sd">    for our JSON data , so everytime we query the API and get JSON</span>
-<span class="sd">    back we&#39;re going to convert that JSON into an object.</span>
+<span class="sd">    back we&#39;re going to convert that JSON into an object similar to</span>
+<span class="sd">    a django model instance.</span>
+
+<span class="sd">    This approach just makes our code more inline with how django does</span>
+<span class="sd">    things and as our API integration grows - We&#39;d have a powerful Query</span>
+<span class="sd">    API similar that&#39;s clean encapusalted so no polluting boilplate API</span>
+<span class="sd">    requests throughout our codebase.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">response_data</span><span class="p">):</span>
@@ -49,10 +55,13 @@
 <span class="sd">        We&#39;ll take the dictionary and set dynamic properties on this</span>
 <span class="sd">        instance of ModelObject.</span>
 <span class="sd">        Args:</span>
-<span class="sd">            response_data (dict) : a dictionary comming</span>
-<span class="sd">            from response.json()</span>
+<span class="sd">            response_data (dict) : a dictionary comming from response.json()</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">try</span><span class="p">:</span>
+            <span class="c1"># storing in object_collection for more complex usage</span>
+            <span class="c1"># to access nth level data.</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">object_collection</span> <span class="o">=</span> <span class="n">response_data</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+
             <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">response_data</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
                 <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="ow">is</span> <span class="nb">dict</span><span class="p">:</span>
                     <span class="n">v</span> <span class="o">=</span> <span class="n">ModelObject</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>

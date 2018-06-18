@@ -42,18 +42,120 @@ need to setup properties like we normally do in django.</p>
 </dd></dl>
 
 </div>
-<div class="section" id="module-employees.views">
-<span id="views"></span><h1>Views<a class="headerlink" href="#module-employees.views" title="Permalink to this headline">¶</a></h1>
-<p>We import these here so that we can maintain a
-consistent import structure .e.g.
-from employees.views import DashboardView , even
-though these views are seperated into their own files.</p>
+<div class="section" id="module-employees.views.auth">
+<span id="views"></span><h1>Views<a class="headerlink" href="#module-employees.views.auth" title="Permalink to this headline">¶</a></h1>
+<dl class="class">
+<dt id="employees.views.auth.LoginView">
+<em class="property">class </em><code class="descclassname">employees.views.auth.</code><code class="descname">LoginView</code><span class="sig-paren">(</span><em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/employees/views/auth.html#LoginView"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#employees.views.auth.LoginView" title="Permalink to this definition">¶</a></dt>
+<dd><p>Will be responsible for reading the post form data
+and attempting to authenticate this user via the REST
+API.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="employees.views.auth.LogoutView">
+<em class="property">class </em><code class="descclassname">employees.views.auth.</code><code class="descname">LogoutView</code><span class="sig-paren">(</span><em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/employees/views/auth.html#LogoutView"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#employees.views.auth.LogoutView" title="Permalink to this definition">¶</a></dt>
+<dd><p>Will be responsible for clearing out the logged In
+user’s session.</p>
+</dd></dl>
+
+<span class="target" id="module-employees.views.dashboard"></span><dl class="class">
+<dt id="employees.views.dashboard.DashboardView">
+<em class="property">class </em><code class="descclassname">employees.views.dashboard.</code><code class="descname">DashboardView</code><span class="sig-paren">(</span><em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/employees/views/dashboard.html#DashboardView"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#employees.views.dashboard.DashboardView" title="Permalink to this definition">¶</a></dt>
+<dd><p>As the name suggests , this view is responsible
+for rendering the apps dashboard.</p>
+<p>NOTE: I noticed when querying the API limiting doesn’t
+work as expected so this logic assumes only one page of
+results is returned.</p>
+<dl class="method">
+<dt id="employees.views.dashboard.DashboardView.dispatch">
+<code class="descname">dispatch</code><span class="sig-paren">(</span><em>request</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/employees/views/dashboard.html#DashboardView.dispatch"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#employees.views.dashboard.DashboardView.dispatch" title="Permalink to this definition">¶</a></dt>
+<dd><p>The dispatch method is responsible for checking
+if the user is authenticated and setting up
+initial values.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="employees.views.dashboard.DashboardView.get_context_data">
+<code class="descname">get_context_data</code><span class="sig-paren">(</span><em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/employees/views/dashboard.html#DashboardView.get_context_data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#employees.views.dashboard.DashboardView.get_context_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Query the rest API and find the relevant stats we need
+to populate the dashboard.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="employees.views.dashboard.DashboardView.get_queryset">
+<code class="descname">get_queryset</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/employees/views/dashboard.html#DashboardView.get_queryset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#employees.views.dashboard.DashboardView.get_queryset" title="Permalink to this definition">¶</a></dt>
+<dd><p>This is being set to a blank list since we’re not using django’s
+default ORM models and therefore need to define a custom method
+to set context data.</p>
+</dd></dl>
+
+</dd></dl>
+
+<span class="target" id="module-employees.views.employees_listviews"></span><dl class="class">
+<dt id="employees.views.employees_listviews.EmployeeListsView">
+<em class="property">class </em><code class="descclassname">employees.views.employees_listviews.</code><code class="descname">EmployeeListsView</code><span class="sig-paren">(</span><em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/employees/views/employees_listviews.html#EmployeeListsView"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#employees.views.employees_listviews.EmployeeListsView" title="Permalink to this definition">¶</a></dt>
+<dd><p>View will display a list of search results if a search
+was performed or just render a list of all employees if
+no search was performed.</p>
+<p>This is accomplished through the HTTP Verbs POST and GET.</p>
+<dl class="method">
+<dt id="employees.views.employees_listviews.EmployeeListsView.dispatch">
+<code class="descname">dispatch</code><span class="sig-paren">(</span><em>request</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/employees/views/employees_listviews.html#EmployeeListsView.dispatch"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#employees.views.employees_listviews.EmployeeListsView.dispatch" title="Permalink to this definition">¶</a></dt>
+<dd><p>The dispatch method is responsible for checking
+if the user is authenticated and setting up
+initial values .</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="employees.views.employees_listviews.EmployeeListsView.get">
+<code class="descname">get</code><span class="sig-paren">(</span><em>request</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/employees/views/employees_listviews.html#EmployeeListsView.get"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#employees.views.employees_listviews.EmployeeListsView.get" title="Permalink to this definition">¶</a></dt>
+<dd><p>Will only respond to ALL GET requests and
+return a list of all employees.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="employees.views.employees_listviews.EmployeeListsView.post">
+<code class="descname">post</code><span class="sig-paren">(</span><em>request</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/employees/views/employees_listviews.html#EmployeeListsView.post"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#employees.views.employees_listviews.EmployeeListsView.post" title="Permalink to this definition">¶</a></dt>
+<dd><p>Will only respond to POST requests containing
+an email address to search employees.</p>
+<p>We’re checking for q because the users can to this
+endpoint because they’ve searched for an email address
+stored in q. If no email was sent - go back to dashboard.</p>
+<p>This logic should be improved to provide a validation error
+message to the user.</p>
+</dd></dl>
+
+</dd></dl>
+
+<span class="target" id="module-employees.views.profile"></span><dl class="class">
+<dt id="employees.views.profile.ProfileView">
+<em class="property">class </em><code class="descclassname">employees.views.profile.</code><code class="descname">ProfileView</code><span class="sig-paren">(</span><em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/employees/views/profile.html#ProfileView"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#employees.views.profile.ProfileView" title="Permalink to this definition">¶</a></dt>
+<dd><p>View will fetch and display the current
+users profile data.</p>
+<dl class="method">
+<dt id="employees.views.profile.ProfileView.dispatch">
+<code class="descname">dispatch</code><span class="sig-paren">(</span><em>request</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/employees/views/profile.html#ProfileView.dispatch"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#employees.views.profile.ProfileView.dispatch" title="Permalink to this definition">¶</a></dt>
+<dd><p>The dispatch method is responsible for checking
+if the user is authenticated and setting up
+initial values .</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="employees.views.profile.ProfileView.get">
+<code class="descname">get</code><span class="sig-paren">(</span><em>request</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/employees/views/profile.html#ProfileView.get"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#employees.views.profile.ProfileView.get" title="Permalink to this definition">¶</a></dt>
+<dd><p>Will only respond to ALL GET requests and
+return a list of all employees.</p>
+</dd></dl>
+
+</dd></dl>
+
 </div>
 <div class="section" id="module-employees.templatetags.employee_tags">
 <span id="template-tags"></span><h1>Template Tags<a class="headerlink" href="#module-employees.templatetags.employee_tags" title="Permalink to this headline">¶</a></h1>
-<dl class="data">
-<dt id="employees.templatetags.employee_tags.register">
-<code class="descclassname">employees.templatetags.employee_tags.</code><code class="descname">register</code><em class="property"> = &lt;django.template.library.Library object&gt;</em><a class="headerlink" href="#employees.templatetags.employee_tags.register" title="Permalink to this definition">¶</a></dt>
+<dl class="function">
+<dt id="employees.templatetags.employee_tags.get_birthday">
+<code class="descclassname">employees.templatetags.employee_tags.</code><code class="descname">get_birthday</code><span class="sig-paren">(</span><em>value</em>, <em>arg=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/employees/templatetags/employee_tags.html#get_birthday"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#employees.templatetags.employee_tags.get_birthday" title="Permalink to this definition">¶</a></dt>
 <dd><p>A simple template tag to take in the number of days
 until the users next birthday and convert that into
 a neatly formatted date.</p>
@@ -163,7 +265,12 @@ without just tieing us down to using one library.</p>
 <em class="property">class </em><code class="descclassname">tangent_core.api_manager.</code><code class="descname">ModelObject</code><span class="sig-paren">(</span><em>response_data</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/tangent_core/api_manager.html#ModelObject"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tangent_core.api_manager.ModelObject" title="Permalink to this definition">¶</a></dt>
 <dd><p>ModelObject is a simple class we’re going to use as a container
 for our JSON data , so everytime we query the API and get JSON
-back we’re going to convert that JSON into an object.</p>
+back we’re going to convert that JSON into an object similar to
+a django model instance.</p>
+<p>This approach just makes our code more inline with how django does
+things and as our API integration grows - We’d have a powerful Query
+API similar that’s clean encapusalted so no polluting boilplate API
+requests throughout our codebase.</p>
 </dd></dl>
 
 </div>
@@ -209,7 +316,7 @@ recreate the model manager.</p>
   <h3><a href="../index.html">Table Of Contents</a></h3>
   <ul>
 <li><a class="reference internal" href="#">Models</a></li>
-<li><a class="reference internal" href="#module-employees.views">Views</a></li>
+<li><a class="reference internal" href="#module-employees.views.auth">Views</a></li>
 <li><a class="reference internal" href="#module-employees.templatetags.employee_tags">Template Tags</a></li>
 <li><a class="reference internal" href="#module-tangent_core.api_manager">API Manager</a></li>
 <li><a class="reference internal" href="#module-tangent_core.model_facade">Model Facade</a></li>

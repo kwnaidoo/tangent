@@ -1,0 +1,170 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>employees.views.dashboard &#8212; tangent 1.0 documentation</title>
+    <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+   
+  <link rel="stylesheet" href="../../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for employees.views.dashboard</h1><div class="highlight"><pre>
+<span></span><span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="kn">from</span> <span class="nn">collections</span> <span class="k">import</span> <span class="n">OrderedDict</span>
+<span class="kn">from</span> <span class="nn">django.http</span> <span class="k">import</span> <span class="n">HttpResponseRedirect</span>
+<span class="kn">from</span> <span class="nn">django.views.generic</span> <span class="k">import</span> <span class="n">ListView</span>
+<span class="kn">from</span> <span class="nn">django.http</span> <span class="k">import</span> <span class="n">HttpResponseRedirect</span>
+<span class="kn">from</span> <span class="nn">employees.models</span> <span class="k">import</span> <span class="n">Employee</span><span class="p">,</span> <span class="n">RACE_GROUPS</span>
+
+
+<div class="viewcode-block" id="DashboardView"><a class="viewcode-back" href="../../../modules/models.html#employees.views.dashboard.DashboardView">[docs]</a><span class="k">class</span> <span class="nc">DashboardView</span><span class="p">(</span><span class="n">ListView</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    As the name suggests , this view is responsible</span>
+<span class="sd">    for rendering the apps dashboard.</span>
+
+<span class="sd">    NOTE: I noticed when querying the API limiting doesn&#39;t</span>
+<span class="sd">    work as expected so this logic assumes only one page of</span>
+<span class="sd">    results is returned.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">template_name</span> <span class="o">=</span> <span class="s1">&#39;dashboard.html&#39;</span>
+    <span class="n">token</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">user_name</span> <span class="o">=</span> <span class="kc">None</span>
+
+<div class="viewcode-block" id="DashboardView.dispatch"><a class="viewcode-back" href="../../../modules/models.html#employees.views.dashboard.DashboardView.dispatch">[docs]</a>    <span class="k">def</span> <span class="nf">dispatch</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The dispatch method is responsible for checking</span>
+<span class="sd">        if the user is authenticated and setting up</span>
+<span class="sd">        initial values.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="s1">&#39;token&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">request</span><span class="o">.</span><span class="n">session</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">HttpResponseRedirect</span><span class="p">(</span><span class="s1">&#39;/login/&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">token</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">session</span><span class="p">[</span><span class="s1">&#39;token&#39;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">user_name</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">session</span><span class="p">[</span><span class="s1">&#39;user_name&#39;</span><span class="p">]</span>
+        <span class="k">return</span> <span class="nb">super</span><span class="p">(</span><span class="n">DashboardView</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">dispatch</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="DashboardView.get_queryset"><a class="viewcode-back" href="../../../modules/models.html#employees.views.dashboard.DashboardView.get_queryset">[docs]</a>    <span class="k">def</span> <span class="nf">get_queryset</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        This is being set to a blank list since we&#39;re not using django&#39;s</span>
+<span class="sd">        default ORM models and therefore need to define a custom method</span>
+<span class="sd">        to set context data.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">[]</span></div>
+
+<div class="viewcode-block" id="DashboardView.get_context_data"><a class="viewcode-back" href="../../../modules/models.html#employees.views.dashboard.DashboardView.get_context_data">[docs]</a>    <span class="k">def</span> <span class="nf">get_context_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Query the rest API and find the relevant stats we need</span>
+<span class="sd">        to populate the dashboard.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">context</span> <span class="o">=</span> <span class="nb">super</span><span class="p">(</span><span class="n">DashboardView</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">get_context_data</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="n">EmployeeAPI</span> <span class="o">=</span> <span class="n">Employee</span><span class="p">(</span><span class="n">token</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">token</span><span class="p">)</span>
+
+        <span class="n">context</span><span class="p">[</span><span class="s1">&#39;user_name&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">user_name</span>
+        <span class="n">context</span><span class="p">[</span><span class="s1">&#39;birthdays&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">EmployeeAPI</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span>
+            <span class="n">ordering</span><span class="o">=</span><span class="s2">&quot;-birth_date&quot;</span>
+        <span class="p">)</span>
+
+        <span class="c1"># position__sort doesn&#39;t seem to work too well</span>
+        <span class="n">context</span><span class="p">[</span><span class="s1">&#39;positions&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">EmployeeAPI</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">ordering</span><span class="o">=</span><span class="s2">&quot;-position&quot;</span><span class="p">)</span>
+
+        <span class="c1"># all employees</span>
+        <span class="c1"># Generator will discard values after iterating through them so</span>
+        <span class="c1"># listify this to preserve data for later usuage.</span>
+        <span class="n">context</span><span class="p">[</span><span class="s1">&#39;employees&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">EmployeeAPI</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span>
+            <span class="n">ordering</span><span class="o">=</span><span class="s2">&quot;-user__first_name&quot;</span>
+            <span class="p">)</span>
+        <span class="p">)</span>
+
+        <span class="c1"># calculate race groups</span>
+        <span class="n">race_groups</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">emp</span> <span class="ow">in</span> <span class="n">context</span><span class="p">[</span><span class="s1">&#39;employees&#39;</span><span class="p">]:</span>
+            <span class="n">race</span> <span class="o">=</span> <span class="n">RACE_GROUPS</span><span class="p">[</span><span class="n">emp</span><span class="o">.</span><span class="n">race</span><span class="p">]</span>
+            <span class="k">if</span> <span class="n">race</span> <span class="ow">in</span> <span class="n">race_groups</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+                <span class="n">race_groups</span><span class="p">[</span><span class="n">race</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">race_groups</span><span class="p">[</span><span class="n">race</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+
+        <span class="c1"># sort by lowest to highest</span>
+        <span class="n">context</span><span class="p">[</span><span class="s1">&#39;race_groups&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">OrderedDict</span><span class="p">(</span>
+            <span class="nb">sorted</span><span class="p">(</span><span class="n">race_groups</span><span class="o">.</span><span class="n">items</span><span class="p">(),</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">k</span><span class="p">:</span> <span class="n">k</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+        <span class="p">)</span>
+
+        <span class="c1"># calculate genders</span>
+        <span class="n">genders</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;Male&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;Female&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">}</span>
+
+        <span class="k">for</span> <span class="n">emp</span> <span class="ow">in</span> <span class="n">context</span><span class="p">[</span><span class="s1">&#39;employees&#39;</span><span class="p">]:</span>
+            <span class="n">gender</span> <span class="o">=</span> <span class="s1">&#39;Male&#39;</span> <span class="k">if</span> <span class="n">emp</span><span class="o">.</span><span class="n">gender</span> <span class="o">==</span> <span class="s1">&#39;M&#39;</span> <span class="k">else</span> <span class="s1">&#39;Female&#39;</span>
+            <span class="n">genders</span><span class="p">[</span><span class="n">gender</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+
+        <span class="c1"># sort by lowest to highest</span>
+        <span class="n">context</span><span class="p">[</span><span class="s1">&#39;genders&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">OrderedDict</span><span class="p">(</span>
+            <span class="nb">sorted</span><span class="p">(</span><span class="n">genders</span><span class="o">.</span><span class="n">items</span><span class="p">(),</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">k</span><span class="p">:</span> <span class="n">k</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="n">context</span></div></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2018, Kevin Naidoo.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.5</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

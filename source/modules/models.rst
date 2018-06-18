@@ -5,7 +5,16 @@ Models
 
 Views
 ======
-.. automodule:: employees.views
+.. automodule:: employees.views.auth
+    :members:
+
+.. automodule:: employees.views.dashboard
+    :members:
+
+.. automodule:: employees.views.employees_listviews
+    :members:
+
+.. automodule:: employees.views.profile
     :members:
 
 Template Tags
