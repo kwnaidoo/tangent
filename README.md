@@ -39,11 +39,3 @@ tangent_core -- The API communication classes to convert the JSON API requests
                 and responses to something the rest of our app can understand.
 templates -- html template files.
 ```
-
-
-### Why Python 2?
-
-Well we should always use python 3 for new projects , however I've done something
-crazy to my Ubuntu box and don't have the time to fiddle. So stuck with Python 2.7.9
-for now , although most if not all of this code (probably not the urlencode stuff)
-should work just fine with python 3.
